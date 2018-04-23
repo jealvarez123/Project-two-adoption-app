@@ -19,6 +19,9 @@ User page
 Shelter page
 ![alt text](https://i.imgur.com/iaYnq76.jpg)
 
+Entity Relationship Diagram
+![alt text](https://i.imgur.com/coQrhDo.jpg)
+
 
 ## Technologies used
 
