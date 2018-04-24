@@ -14,16 +14,12 @@ mongoose.connect('mongodb://@ds251799.mlab.com:51799/mlab');
 //// Routes ////
 
 // use res.render to load the ejs view file
-app.get('/', function (req, res) {
-  res.render('index');
-});
-
 app.get('/signup', function (req, res) {
   res.render('signup');
 });
 
 app.get('/login', function (req, res) {
-  res.send('login coming soon');
+  res.render('login');
 });
 
 app.listen(3000, () => {
