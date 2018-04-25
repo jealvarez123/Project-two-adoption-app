@@ -1,19 +1,57 @@
-console.log('Can I kick it?');
+var db           = require('./models');
 //require express frameware and additional modules
 const express    = require('express');
 const app        = express();
 const bodyParser = require('body-parser');
-mongoose = require('mongoose');
+mongoose         = require('mongoose');
 
 
 // middleware
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
  app.use(bodyParser.urlencoded({extended:true}));
-mongoose.connect('mongodb://@ds251799.mlab.com:51799/mlab');
+mongoose.connect('mongodb://localhost/login');
 //// Routes ////
 
-// use res.render to load the ejs view file
+// use res.render to load the ejs view file\\\
+
+// index page
+app.get('/', function(req, res) {
+    res.render('index');
+});
+
+app.get('/collections', function (req, res) {
+  // send all books as JSON response
+  db.Pet.find({}, function(err, pets){
+    if (err) {
+      console.log("index error: " + err);
+      res.sendStatus(500);
+    }
+    res.render('collection',{pets:pets});
+  });
+});
+
+//create
+app.post("/collections", function(req,res){
+  //get data from the form and add to the DB
+  var petName   = req.body.petName;
+  var breed     = req.body.breed;
+  var age       = req.body.age;
+  var sex       = req.body.sex;
+  var imageurl  = req.body.imageurl;
+
+  var newPet     = {petName:petName, breed:breed, age:age, sex:sex, imageurl:imageurl}
+  //Create a new pet and save it to the DB
+  db.Pet.create(newPet, function(err,newlyCreatedPet){
+    if(err){
+      console.log(err);
+    } else {
+      //redirect back to collections page
+      res.redirect('/collections');
+    }
+  });
+});
+
 app.get('/signup', function (req, res) {
   res.render('signup');
 });

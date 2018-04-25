@@ -1,12 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link href="../stylesheets/style.css" rel="stylesheet" type="text/css">
-    <title></title>
-  </head>
-  <body>
-    <h1> Hello!</h1>
+<html lang="en">
 
-  </body>
+<head>
+
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
+
+  <% include ./partials/head.ejs %>
+
+<link href="../stylesheets/style.css" rel="stylesheet" type="text/css">
+
+<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+
+</head>
+
+<body class="container">
+
+  <header>
+    <% include ./partials/header.ejs %>
+  </header>
+
+  <main>
+    <div class="jumbotron">
+
+      <h2>Add your pet for adoption</h2>
+
+
+    </div>
+    <div>
+      <!-- <h1>Albums</h1> -->
+    </div>
+    <%# <div class="card border-dark mb-3" style="width: 18rem;">
+      <img class="card-img-top" width="286" height="180" src=imageurl:imageurl alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div> %>
+
+
+    <div class='carousel'>
+
+    </div>
+
+
+
+      <div class="containerOne">
+        <form method="POST" action="/collections">
+          <div class="row">
+            <div class="c25">
+              <label for="petName">Name</label>
+            </div>
+            <div class="c75">
+              <input required type="text" id="petName" name="petName" placeholder="Name..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="c25">
+              <label for="breed">Breed</label>
+            </div>
+            <div class="c75">
+              <input required type="text" id="breed" name="breed" placeholder="Breed..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="c25">
+              <label for="age">Age</label>
+            </div>
+            <div class="c75">
+              <input required type="text" id="age" name="age" placeholder="Age..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="c25">
+              <label for="sex">Sex</label>
+            </div>
+            <div class="c75">
+              <input required type="text" id="sex" name="sex" placeholder="sex..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="c25">
+              <label for="imageurl"> Picture of your pet</label>
+            </div>
+            <div class="c75">
+              <input required type="text" id="imageurl" name="imageurl" placeholder="Picture..">
+            </div>
+          </div>
+          <div class="row">
+            <input type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+  </main>
+
+  <footer>
+    <% include ./partials/footer.ejs %>
+  </footer>
+
+</body>
+
 </html>
