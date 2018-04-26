@@ -9,7 +9,7 @@ var signupData = $("#signup-form").serialize();
 
  // send POST request to /users with the form data
 
- $.post('/users', signupData, function(response){
+ $.post('/signup', signupData, function(response){
    console.log(response);
  })
 

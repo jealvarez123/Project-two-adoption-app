@@ -5,12 +5,14 @@ const app        = express();
 const bodyParser = require('body-parser');
 const mongoose   = require('mongoose');
 const session    = require('express-session');
+const bcrypt     = require('bcrypt');
 
 const User       = require('./models/user');
 const saltRounds = 10;
 
 // middleware
 app.use(express.static('public'));
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -52,8 +54,10 @@ app.post("/collections", function(req,res){
     sex:sex,
     imageurl:imageurl
   }
-  //Create a new pet and save it to the DB
-  db.Pet.create(newPet, function(err,newlyCreatedPet){
+  ///////////////////////////////////////////
+  //Create a new pet and save it to the DB//
+  /////////////////////////////////////////
+  db.Pet.create(newPet, (err,newlyCreatedPet) =>{
     if(err){
       console.log(err);
     } else {
@@ -63,13 +67,58 @@ app.post("/collections", function(req,res){
   });
 });
 
-app.get('/signup', function (req, res) {
+////////////////
+// edit pets //
+//////////////
+app.get('collections/:id/edit', (req,res) => {
+  db.Pet.findById(req.params.id, (err,foundPet) => {
+    if(err) {
+      res.redirect('/collections');
+    } else {
+      res.render('edit', {pet: foundPet});
+    }
+
+  });
+});
+//////////////////
+// update pets //
+////////////////
+app.put('/collections/:id', (req,res) => {
+  db.Pet.findByIdAndUpdate(req.params.id, req.body.pet, (err,updatePet) => {
+    if(err){
+      res.redirect('/collections');
+    }else {
+      res.redirect('/collections')
+    }
+  });
+});
+
+/////////////////
+// Delete Pets//
+///////////////
+
+app.delete('/collections/:id', (req,res) => {
+  db.Pet.findByIdAndRemove(req.params.id, (err) => {
+    if(err){
+      res.redirect('/collections');
+    }else
+      res.redirect('/collections');
+    
+  });
+});
+
+
+/////////////
+// Signup //
+///////////
+
+app.get('/signup', (req, res) => {
   res.render('signup');
 });
 
 app.post('/signup', (req, res) => {
-	console.log("PARAMS:", req.params);
-	console.log("BODY:", req.body);
+	// console.log("PARAMS:", req.params);
+	// console.log("BODY:", req.body);
 
   let username = req.body.username;
 
@@ -80,7 +129,7 @@ app.post('/signup', (req, res) => {
 	user.save().then(() => {
 		console.log("New user created!", username);
 		req.session.user = user;
-		res.redirect('/collections')
+		res.redirect('/')
 	})
   });
 });

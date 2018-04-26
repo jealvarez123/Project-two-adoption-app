@@ -48,6 +48,15 @@
                   <h4 class='inline-header'>Sex:</h4>
                   <span class='album-releaseDate'><%= pet.sex %></span>
                 </li>
+                <li class="list-group-item">
+                  <p>
+                    <a class="btn btn-primary btn-large"href="collections/<%=pet._id %>/edit">EDIT</a>
+                  </p>
+                <li class='list-group-item'>
+                <form id='delete' action='/collections/<%= pet._id %>?_method=DELETE' method='POST' >
+                  <button class='btn btn-danger'>DELETE</button>
+                </form>
+              </li>
 
               </ul>
             </div>
@@ -59,7 +68,7 @@
       </div>
     </div>
   </div>
-   <!-- end one album -->
+   <!-- end one pet -->
 <% }); %>
 </div>
 </main>
