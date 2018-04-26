@@ -6,11 +6,15 @@ const bodyParser = require('body-parser');
 const mongoose   = require('mongoose');
 const session    = require('express-session');
 
+const User       = require('./models/user');
+const saltRounds = 10;
 
 // middleware
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
+
+
 mongoose.connect('mongodb://localhost/collection');
 //// Routes ////
 
@@ -43,7 +47,7 @@ app.post("/collections", function(req,res){
 
   var newPet    =
   {petName:petName,
-    breed:breed, 
+    breed:breed,
     age:age,
     sex:sex,
     imageurl:imageurl
@@ -61,6 +65,24 @@ app.post("/collections", function(req,res){
 
 app.get('/signup', function (req, res) {
   res.render('signup');
+});
+
+app.post('/signup', (req, res) => {
+	console.log("PARAMS:", req.params);
+	console.log("BODY:", req.body);
+
+  let username = req.body.username;
+
+  // hash the password
+  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+    // save the password digest (hash) to the user
+	let user = new User({username: username, passwordDigest: hash});
+	user.save().then(() => {
+		console.log("New user created!", username);
+		req.session.user = user;
+		res.redirect('/collections')
+	})
+  });
 });
 
 app.get('/login', function (req, res) {
