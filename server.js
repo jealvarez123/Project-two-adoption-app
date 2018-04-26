@@ -3,21 +3,22 @@ var db           = require('./models');
 const express    = require('express');
 const app        = express();
 const bodyParser = require('body-parser');
-mongoose         = require('mongoose');
+const mongoose   = require('mongoose');
+const session    = require('express-session');
 
 
 // middleware
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
- app.use(bodyParser.urlencoded({extended:true}));
-mongoose.connect('mongodb://localhost/login');
+app.use(bodyParser.urlencoded({extended:true}));
+mongoose.connect('mongodb://localhost/collection');
 //// Routes ////
 
 // use res.render to load the ejs view file\\\
 
 // index page
 app.get('/', function(req, res) {
-    res.render('index');
+  res.render('index');
 });
 
 app.get('/collections', function (req, res) {
@@ -40,7 +41,13 @@ app.post("/collections", function(req,res){
   var sex       = req.body.sex;
   var imageurl  = req.body.imageurl;
 
-  var newPet     = {petName:petName, breed:breed, age:age, sex:sex, imageurl:imageurl}
+  var newPet    =
+  {petName:petName,
+    breed:breed, 
+    age:age,
+    sex:sex,
+    imageurl:imageurl
+  }
   //Create a new pet and save it to the DB
   db.Pet.create(newPet, function(err,newlyCreatedPet){
     if(err){
