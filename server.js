@@ -1,3 +1,5 @@
+var port = process.env.PORT || 5000
+
 var db                 = require('./models');
 //require express frameware and additional modules
 const express          = require('express');
@@ -24,8 +26,11 @@ app.use(session({
   cookie: { maxAge: 30 * 60 * 1000 }
 }));
 
-
+if (process.env.NODE_ENV == "production") {
+  mongoose.connect(process.env.MLAB_URL)
+} else {
 mongoose.connect('mongodb://localhost/furriends');
+}
 
 //Use this for any requests with _method
 app.use(methodOverride("_method"));
@@ -215,5 +220,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log('listening on 5000')
+  console.log('listening on port' + port)
 })
