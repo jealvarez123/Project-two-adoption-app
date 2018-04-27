@@ -134,7 +134,7 @@ app.get('/signup', (req, res) => {
 //create//
 /////////
 
-app.post('/users', (req, res) => {
+app.post('/signup', (req, res) => {
   console.log(req.body)
   User.createSecure(req.body.email, req.body.username, req.body.password, (err, newUser) => {
     req.session.userId = newUser._id;

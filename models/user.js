@@ -8,7 +8,7 @@ const UserSchema = new Schema({
     passwordDigest: { type: String, required: true }
 });
 
-UserSchema.statics.createSecure = (email, username, password, callback) => {
+UserSchema.statics.createSecure = function (email, username, password, callback){
   // `this` references our user model, since this function will be called from the model itself
   // store it in variable `UserModel` because `this` changes context in nested callbacks
 
