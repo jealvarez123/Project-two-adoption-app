@@ -3,11 +3,12 @@ var db                 = require('./models');
 const express          = require('express');
       app              = express();
       bodyParser       = require('body-parser');
+      path             = require("path");
       mongoose         = require('mongoose');
       session          = require('express-session');
       bcrypt           = require('bcrypt');
       methodOverride   = require('method-override')
-const User             = require('./models/user');
+      User             = require('./models/user');
 
 const saltRounds = 10;
 
@@ -16,9 +17,15 @@ app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(session({
+  saveUninitialized: true,
+  resave: true,
+  secret: 'SuperSecretCookie',
+  cookie: { maxAge: 30 * 60 * 1000 }
+}));
 
 
-mongoose.connect('mongodb://localhost/collection');
+mongoose.connect('mongodb://localhost/furriends');
 
 //Use this for any requests with _method
 app.use(methodOverride("_method"));
@@ -32,7 +39,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/collections', function (req, res) {
-  // send all books as JSON response
+
   db.Pet.find({}, function(err, pets){
     if (err) {
       console.log("index error: " + err);
@@ -42,7 +49,10 @@ app.get('/collections', function (req, res) {
   });
 });
 
-//create
+///////////
+//create//
+/////////
+
 app.post("/collections", function(req,res){
   //get data from the form and add to the DB
   var petName   = req.body.petName;
@@ -52,7 +62,8 @@ app.post("/collections", function(req,res){
   var imageurl  = req.body.imageurl;
 
   var newPet    =
-  {petName:petName,
+  {
+    petName:petName,
     breed:breed,
     age:age,
     sex:sex,
@@ -119,21 +130,78 @@ app.get('/signup', (req, res) => {
   res.render('signup');
 });
 
-// app.post('/signup', (req, res) => {
-// 	// console.log("PARAMS:", req.params);
-// 	// console.log("BODY:", req.body);
+///////////
+//create//
+/////////
+
+app.post('/users', (req, res) => {
+  console.log(req.body)
+  User.createSecure(req.body.email, req.body.username, req.body.password, (err, newUser) => {
+    req.session.userId = newUser._id;
+    res.redirect('/profile');
+  });
+});
+
+//////////////////////
+//Show user profile//
+////////////////////
+
+
+app.get('/profile', (req, res) => {
+  console.log('session user id: ', req.session.userId);
+  // find the user currently logged in
+  User.findOne({_id: req.session.userId}, (err, currentUser) => {
+    if (err){
+      console.log('database error: ', err);
+      res.redirect('/login');
+    } else {
+      // render profile template with user's data
+      console.log('loading profile of logged in user');
+      res.render('user-landing-page.ejs', {user: currentUser});
+    }
+  });
+});
+
+app.get('/logout', (req, res) => {
+  // remove the session user id
+  req.session.userId = null;
+  // redirect to login
+  res.redirect('/login');
+});
+
+
+
+
+
+
+
+
+
+
+// app.post("/signup", (req,res) => {
+//   //get data from the form and add to the DB
+//   var email           = req.body.email;
+//   var username        = req.body.username;
+//   var passwordDigest  = req.body.passwordDigest;
 //
-//   let username = req.body.username;
 //
-//   // hash the password
-//   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-//     // save the password digest (hash) to the user
-// 	let user = new User({username: username, passwordDigest: hash});
-// 	user.save().then(() => {
-// 		console.log("New user created!", username);
-// 		req.session.user = user;
-// 		res.redirect('/')
-// 	})
+//   var newUser    =
+//   {
+//     email:"email",
+//     username:"username",
+//     passwordDigest:"passwordDigest"
+//   }
+//   ////////////////////////////////////////////
+//   //Create a new user and save it to the DB//
+//   //////////////////////////////////////////
+//
+//   db.User.create(newUser, (err,newlyCreatedUser) =>{
+//     if(err){
+//       console.log(err);
+//     } else {
+//       //redirect back to collections page
+//       res.redirect('/collections');
+//     }
 //   });
 // });
 
@@ -141,6 +209,6 @@ app.get('/login', function (req, res) {
   res.render('login');
 });
 
-app.listen(3000, () => {
-  console.log('listening on 3000')
+app.listen(5000, () => {
+  console.log('listening on 5000')
 })

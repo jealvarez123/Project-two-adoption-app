@@ -4,7 +4,7 @@
 <head>
   <% include ./partials/head.ejs %>
 
-<link href="../stylesheets/style.css" rel="stylesheet" type="text/css">
+<link href="../stylesheets/style.css" rel="stylesheet" type="text/html">
 
 </head>
 
@@ -22,15 +22,15 @@
     <form action="/collections/<%=pet._id %>?_method=PUT" method="POST">
       <div class="row">
         <div class="c25">
-          <label for="name">Pet Name</label>
+          <label for="petName">Pet Name</label>
         </div>
         <div class="c75">
-          <input required type="text" id="name" name="pet[name]" value="<% pet.name %>">
+          <input required type="text" id="name" name="pet[petName]" value="<% pet.petName %>">
         </div>
       </div>
       <div class="row">
         <div class="c25">
-          <label for="petName">Pet Name</label>
+          <label for="breed">Breed</label>
         </div>
         <div class="c75">
           <input required type="text" id="breed" name="pet[breed]" value="<%= pet.breed %>">

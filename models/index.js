@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/collection");
+mongoose.connect("mongodb://localhost/furriends");
 
 module.exports.Pet = require("./pets.js");
-// module.exports.Pet = require("./user.js");
+
+module.exports.User = require("./user.js");
