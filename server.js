@@ -1,13 +1,14 @@
-var db           = require('./models');
+var db                 = require('./models');
 //require express frameware and additional modules
-const express    = require('express');
-const app        = express();
-const bodyParser = require('body-parser');
-const mongoose   = require('mongoose');
-const session    = require('express-session');
-const bcrypt     = require('bcrypt');
+const express          = require('express');
+      app              = express();
+      bodyParser       = require('body-parser');
+      mongoose         = require('mongoose');
+      session          = require('express-session');
+      bcrypt           = require('bcrypt');
+      methodOverride   = require('method-override')
+const User             = require('./models/user');
 
-const User       = require('./models/user');
 const saltRounds = 10;
 
 // middleware
@@ -18,6 +19,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 
 mongoose.connect('mongodb://localhost/collection');
+
+//Use this for any requests with _method
+app.use(methodOverride("_method"));
 //// Routes ////
 
 // use res.render to load the ejs view file\\\
@@ -77,7 +81,6 @@ app.get('collections/:id/edit', (req,res) => {
     } else {
       res.render('edit', {pet: foundPet});
     }
-
   });
 });
 //////////////////
@@ -101,9 +104,9 @@ app.delete('/collections/:id', (req,res) => {
   db.Pet.findByIdAndRemove(req.params.id, (err) => {
     if(err){
       res.redirect('/collections');
-    }else
+    }else{
       res.redirect('/collections');
-    
+    }
   });
 });
 
@@ -116,23 +119,23 @@ app.get('/signup', (req, res) => {
   res.render('signup');
 });
 
-app.post('/signup', (req, res) => {
-	// console.log("PARAMS:", req.params);
-	// console.log("BODY:", req.body);
-
-  let username = req.body.username;
-
-  // hash the password
-  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-    // save the password digest (hash) to the user
-	let user = new User({username: username, passwordDigest: hash});
-	user.save().then(() => {
-		console.log("New user created!", username);
-		req.session.user = user;
-		res.redirect('/')
-	})
-  });
-});
+// app.post('/signup', (req, res) => {
+// 	// console.log("PARAMS:", req.params);
+// 	// console.log("BODY:", req.body);
+//
+//   let username = req.body.username;
+//
+//   // hash the password
+//   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+//     // save the password digest (hash) to the user
+// 	let user = new User({username: username, passwordDigest: hash});
+// 	user.save().then(() => {
+// 		console.log("New user created!", username);
+// 		req.session.user = user;
+// 		res.redirect('/')
+// 	})
+//   });
+// });
 
 app.get('/login', function (req, res) {
   res.render('login');
