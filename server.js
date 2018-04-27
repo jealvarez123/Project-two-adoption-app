@@ -209,6 +209,11 @@ app.get('/login', function (req, res) {
   res.render('login');
 });
 
+app.get('*', (req, res) => {
+  res.render('404', {
+  })
+});
+
 app.listen(5000, () => {
   console.log('listening on 5000')
 })
