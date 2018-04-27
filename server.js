@@ -74,7 +74,7 @@ app.post("/collections", function(req,res){
 ////////////////
 // edit pets //
 //////////////
-app.get('collections/:id/edit', (req,res) => {
+app.get('/collections/:id/edit', (req,res) => {
   db.Pet.findById(req.params.id, (err,foundPet) => {
     if(err) {
       res.redirect('/collections');
@@ -87,7 +87,7 @@ app.get('collections/:id/edit', (req,res) => {
 // update pets //
 ////////////////
 app.put('/collections/:id', (req,res) => {
-  db.Pet.findByIdAndUpdate(req.params.id, req.body.pet, (err,updatePet) => {
+  db.Pet.findByIdAndUpdate(req.params.id,req.body.pet, (err, updatedPet) => {
     if(err){
       res.redirect('/collections');
     }else {
