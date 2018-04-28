@@ -26,11 +26,11 @@ app.use(session({
   cookie: { maxAge: 30 * 60 * 1000 }
 }));
 
-if (process.env.NODE_ENV == "production") {
-  mongoose.connect(process.env.MLAB_URL)
-} else {
+// if (process.env.NODE_ENV == "production") {
+//   mongoose.connect(process.env.MLAB_URL)
+// } else {
+// }
 mongoose.connect('mongodb://localhost/furriends');
-}
 
 //Use this for any requests with _method
 app.use(methodOverride("_method"));
@@ -38,10 +38,11 @@ app.use(methodOverride("_method"));
 
 // use res.render to load the ejs view file\\\
 
-// index page
+//index page
 app.get('/', function(req, res) {
   res.render('index');
 });
+
 
 app.get('/collections', function (req, res) {
 
@@ -139,13 +140,42 @@ app.get('/signup', (req, res) => {
 //create//
 /////////
 
-app.post('/signup', (req, res) => {
+app.post('/users', (req, res) => {
   console.log(req.body)
   User.createSecure(req.body.email, req.body.username, req.body.password, (err, newUser) => {
     req.session.userId = newUser._id;
     res.redirect('/profile');
   });
 });
+
+//////////
+//login//
+////////
+
+app.get('/login', function (req, res) {
+  res.render('login');
+});
+
+///////////////////////////////////////////////
+// authenticate the user and set the session//
+/////////////////////////////////////////////
+
+
+app.post('/sessions', function (req, res) {
+  // call authenticate function to check if password user entered is correct
+  User.authenticate(req.body.email, req.body.username, req.body.password, function (err, loggedInUser) {
+    if (err){
+      console.log('authentication error: ', err);
+      res.status(500).send();
+    } else {
+      console.log('setting sesstion user id ', loggedInUser._id);
+      req.session.userId = loggedInUser._id;
+      res.redirect('/profile');
+    }
+  });
+});
+
+
 
 //////////////////////
 //Show user profile//
@@ -162,7 +192,7 @@ app.get('/profile', (req, res) => {
     } else {
       // render profile template with user's data
       console.log('loading profile of logged in user');
-      res.render('user-landing-page.ejs', {user: currentUser});
+      res.render('user-landing-page', {user: currentUser});
     }
   });
 });
@@ -175,43 +205,11 @@ app.get('/logout', (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-// app.post("/signup", (req,res) => {
-//   //get data from the form and add to the DB
-//   var email           = req.body.email;
-//   var username        = req.body.username;
-//   var passwordDigest  = req.body.passwordDigest;
-//
-//
-//   var newUser    =
-//   {
-//     email:"email",
-//     username:"username",
-//     passwordDigest:"passwordDigest"
-//   }
-//   ////////////////////////////////////////////
-//   //Create a new user and save it to the DB//
-//   //////////////////////////////////////////
-//
-//   db.User.create(newUser, (err,newlyCreatedUser) =>{
-//     if(err){
-//       console.log(err);
-//     } else {
-//       //redirect back to collections page
-//       res.redirect('/collections');
-//     }
-//   });
-// });
-
-app.get('/login', function (req, res) {
-  res.render('login');
+app.get('/logout', function (req, res) {
+  // remove the session user id
+  req.session.userId = null;
+  // redirect to login (for now)
+  res.redirect('/login');
 });
 
 app.get('*', (req, res) => {
