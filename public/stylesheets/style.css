@@ -7,10 +7,10 @@ body {
   text-align: center;
   background-color: #74C08E
 }
-/* main {
-  margin-right: 300px;
-  margin-bottom: 100px;
-} */
+
+a {
+  color: black;
+}
 
 .jumbotron {
     background-color: #9EC3AB;
@@ -37,6 +37,16 @@ body {
 .navbar-default {
     background-color: #9EC3AB;
     border-color: #9EC3AB;
+}
+
+.list-group-item {
+
+  background-color: #9EC3AB;
+  color: #777;
+}
+
+.panel-footer {
+    background-color: #9EC3AB;
 }
 
 label {

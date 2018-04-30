@@ -23,6 +23,7 @@ $(document).ready(function() {
     var loginData = $(this).serialize();
     // send POST request to /login with the form data
     $.post('/login', loginData, function(response) {
+      console.log('This is working');
       console.log(response);
     });
   });

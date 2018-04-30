@@ -26,11 +26,11 @@ app.use(session({
   cookie: { maxAge: 30 * 60 * 1000 }
 }));
 
-// if (process.env.NODE_ENV == "production") {
-//   mongoose.connect(process.env.MLAB_URL)
-// } else {
-// }
+if (process.env.NODE_ENV == "production") {
+  mongoose.connect(process.env.MLAB_URL)
+} else {
 mongoose.connect('mongodb://localhost/furriends');
+}
 
 //Use this for any requests with _method
 app.use(methodOverride("_method"));
@@ -163,7 +163,7 @@ app.get('/login', function (req, res) {
 
 app.post('/sessions', function (req, res) {
   // call authenticate function to check if password user entered is correct
-  User.authenticate(req.body.email, req.body.username, req.body.password, function (err, loggedInUser) {
+  User.authenticate(req.body.email, req.body.password, function (err, loggedInUser) {
     if (err){
       console.log('authentication error: ', err);
       res.status(500).send();
@@ -205,18 +205,18 @@ app.get('/logout', (req, res) => {
 });
 
 
-app.get('/logout', function (req, res) {
-  // remove the session user id
-  req.session.userId = null;
-  // redirect to login (for now)
-  res.redirect('/login');
-});
+// app.get('/logout', function (req, res) {
+//   // remove the session user id
+//   req.session.userId = null;
+//   // redirect to login (for now)
+//   res.redirect('/login');
+// });
 
 app.get('*', (req, res) => {
   res.render('404', {
   })
 });
 
-app.listen(5000, () => {
+app.listen(process.env.MLAB_URL || 5000, () => {
   console.log('listening on port' + port)
 })
