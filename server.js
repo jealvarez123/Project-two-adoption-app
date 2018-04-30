@@ -206,12 +206,7 @@ app.get('/logout', (req, res) => {
 });
 
 
-// app.get('/logout', function (req, res) {
-//   // remove the session user id
-//   req.session.userId = null;
-//   // redirect to login (for now)
-//   res.redirect('/login');
-// });
+
 
 app.get('*', (req, res) => {
   res.render('404', {
