@@ -194,7 +194,6 @@ app.get('/profile', (req, res) => {
       // render profile template with user's data
       console.log('loading profile of logged in user');
       res.render('user-landing-page', {user: currentUser});
-      res.redirect('/profile');
     }
   });
 });
@@ -221,4 +220,4 @@ app.get('*', (req, res) => {
 
 app.listen(process.env.PORT || 5000, () => {
   console.log('listening on port' + port)
-}) 
+})

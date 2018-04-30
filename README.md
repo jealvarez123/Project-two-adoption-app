@@ -26,8 +26,6 @@ Entity Relationship Diagram
 |----------- |-----------     |-----------  |-----------         |
 |/Pets       |GET             |Show         |Show all pets       |
 |/Pets/:id   |GET             |Show         |Show one pet        |
-|/shelter    |GET             |Show         |Show pets added     |
-|/shelter    |POST            |Add          |Add a pet           |
 |/shelter/:id|PUT             |Update       |Update status on pet|
 |/shelter/:id|DELET           |Delete       |Delete a pet        |
 |/users      |GET             |Show         |Show liked pets     |
