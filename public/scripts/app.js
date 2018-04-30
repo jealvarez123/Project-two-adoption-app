@@ -15,6 +15,7 @@ $(document).ready(function() {
 
   $('#login-form').on('submit', function(e) {
     e.preventDefault();
+    console.log('It worked');
 
   //   // select the form and serialize its data
   //   // note: this is the form because the event handler
