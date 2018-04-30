@@ -123,6 +123,7 @@ app.delete('/collections/:id', (req,res) => {
       res.redirect('/collections');
     }else{
       res.redirect('/collections');
+
     }
   });
 });
@@ -193,6 +194,7 @@ app.get('/profile', (req, res) => {
       // render profile template with user's data
       console.log('loading profile of logged in user');
       res.render('user-landing-page', {user: currentUser});
+      res.redirect('/profile');
     }
   });
 });

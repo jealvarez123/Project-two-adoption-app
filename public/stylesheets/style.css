@@ -47,6 +47,11 @@ a {
 
 .panel-footer {
     background-color: #9EC3AB;
+
+}
+
+.row {
+  margin-bottom: 30px;
 }
 
 label {
