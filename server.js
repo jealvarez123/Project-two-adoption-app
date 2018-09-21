@@ -31,18 +31,17 @@ if (process.env.NODE_ENV == "production") {
 } else {
 mongoose.connect('mongodb://localhost/furriends');
 }
-
 //Use this for any requests with _method
 app.use(methodOverride("_method"));
 //// Routes ////
-
 // use res.render to load the ejs view file\\\
 
-//index page
+///////////////
+//index page//
+/////////////
 app.get('/', function(req, res) {
   res.render('index');
 });
-
 
 app.get('/collections', function (req, res) {
 
@@ -54,11 +53,9 @@ app.get('/collections', function (req, res) {
     res.render('collection',{pets:pets});
   });
 });
-
 ///////////
 //create//
 /////////
-
 app.post("/collections", function(req,res){
   //get data from the form and add to the DB
   var petName   = req.body.petName;
@@ -66,7 +63,6 @@ app.post("/collections", function(req,res){
   var age       = req.body.age;
   var sex       = req.body.sex;
   var imageurl  = req.body.imageurl;
-
   var newPet    =
   {
     petName:petName,
@@ -87,7 +83,6 @@ app.post("/collections", function(req,res){
     }
   });
 });
-
 ////////////////
 // edit pets //
 //////////////
@@ -112,11 +107,9 @@ app.put('/collections/:id', (req,res) => {
     }
   });
 });
-
 /////////////////
 // Delete Pets//
 ///////////////
-
 app.delete('/collections/:id', (req,res) => {
   db.Pet.findByIdAndRemove(req.params.id, (err) => {
     if(err){
@@ -127,20 +120,15 @@ app.delete('/collections/:id', (req,res) => {
     }
   });
 });
-
-
 /////////////
 // Signup //
 ///////////
-
 app.get('/signup', (req, res) => {
   res.render('signup');
 });
-
 ///////////
 //create//
 /////////
-
 app.post('/users', (req, res) => {
   console.log(req.body)
   User.createSecure(req.body.email, req.body.username, req.body.password, (err, newUser) => {
@@ -148,20 +136,15 @@ app.post('/users', (req, res) => {
     res.redirect('/profile');
   });
 });
-
 //////////
 //login//
 ////////
-
 app.get('/login', function (req, res) {
   res.render('login');
 });
-
 ///////////////////////////////////////////////
 // authenticate the user and set the session//
 /////////////////////////////////////////////
-
-
 app.post('/sessions', function (req, res) {
   // call authenticate function to check if password user entered is correct
   User.authenticate(req.body.email, req.body.password, function (err, loggedInUser) {
@@ -175,14 +158,9 @@ app.post('/sessions', function (req, res) {
     }
   });
 });
-
-
-
 //////////////////////
 //Show user profile//
 ////////////////////
-
-
 app.get('/profile', (req, res) => {
   console.log('session user id: ', req.session.userId);
   // find the user currently logged in
@@ -197,22 +175,16 @@ app.get('/profile', (req, res) => {
     }
   });
 });
-
 app.get('/logout', (req, res) => {
   // remove the session user id
   req.session.userId = null;
   // redirect to login
   res.redirect('/login');
 });
-
-
-
-
 app.get('*', (req, res) => {
   res.render('404', {
   })
 });
-
 app.listen(process.env.PORT || 5000, () => {
   console.log('listening on port' + port)
 })
